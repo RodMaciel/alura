@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Banner from "./componentes/Banner";
 import Formulario from "./componentes/Formulario";
+import Rodape from "./componentes/Rodape";
 import Time from "./componentes/Time/index.js"
 
 
@@ -38,16 +39,16 @@ function App() {
       corSecundaria: "#FFF5D9",
     },
     {
-      nome: "Ruim",
+      nome: "Flex",
       corPrimaria: "#FF8A29",
       corSecundaria: "#FFEEDF",
     }
   ];
 
-  const [squads, setSquads] = useState([])
+  const [squads, setSquads] = useState([]) 
 
   const aoNovoSquadAdd = (squad) => {
-    console.log(squad)
+    debugger
     setSquads([...squads,squad])
 
   }
@@ -55,8 +56,20 @@ function App() {
   return (
     <div className="App">
       <Banner />
-      <Formulario aoSquadCadastrado={(squad) => aoNovoSquadAdd(squad)} />
-      {times.map(time => <Time key = {time.nome} nome = {time.nome}/>)}
+      <Formulario
+        times={times.map((time) => time.nome)}
+        aoSquadCadastrado={(squad) => aoNovoSquadAdd(squad)}
+      />
+      {times.map((time) => (
+        <Time
+          key={time.nome}
+          nome={time.nome}
+          corPrimaria={time.corPrimaria}
+          corSecundaria={time.corSecundaria}
+          colaboradores={squads.filter(colaborador => colaborador.time === time.nome)}
+        />
+      ))}
+      <Rodape/>
     </div>
   );
 }
